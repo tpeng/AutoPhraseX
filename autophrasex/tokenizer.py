@@ -3,12 +3,15 @@ import logging
 import os
 
 import jieba
-import opencc
 from LAC import LAC
 
 from . import utils
 
-converter = opencc.OpenCC('t2s.json')
+try:
+    import opencc
+    converter = opencc.OpenCC('t2s.json')
+except ImportError:
+    converter = None
 
 
 class AbstractTokenizer(abc.ABC):
@@ -79,3 +82,8 @@ class JiebaTokenizer(AbstractTokenizer):
         result = jieba.lcut(text, cut_all=kwargs.get('cut_all', False), HMM=kwargs.get('HMM', True))
         result = [x.strip() for x in result if x.strip()]
         return result
+
+
+class DefaultTokenizer(AbstractTokenizer):
+    def tokenize(self, text, **kwargs):
+        return text.split()

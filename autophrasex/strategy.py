@@ -147,11 +147,11 @@ class Strategy(AbstractStrategy):
     def build_phrase_pool(self, quality_phrases, frequent_phrases, **kwargs):
         pos_pool, neg_pool = [], []
         for p in frequent_phrases:
-            _p = ''.join(p.split(' '))
+            _p = ' '.join(p.split(' '))
             # unigrams are positve phrase
-            if _p in self.ngrams_callback.ngrams_freq[1] and len(_p) > self.phrase_min_unigram_length:
-                pos_pool.append(p)
-                continue
+            # if _p in self.ngrams_callback.ngrams_freq[1] and len(_p) > self.phrase_min_unigram_length:
+            #     pos_pool.append(p)
+            #     continue
             if _p in quality_phrases:
                 if len(p) > self.phrase_min_unigram_length:
                     pos_pool.append(p)
@@ -213,7 +213,7 @@ class Strategy(AbstractStrategy):
 
         ngrams = phrase.split(' ')
         counter = self.ngrams_callback.ngrams_freq[len(ngrams)]
-        freq = counter[''.join(ngrams)] / sum(counter.values())
+        freq = counter[' '.join(ngrams)] / sum(counter.values())
         doc_freq = self.idf_callback.doc_freq_of(phrase)
         idf = self.idf_callback.idf_of(phrase)
         pmi = self.ngrams_callback.pmi_of(phrase)
